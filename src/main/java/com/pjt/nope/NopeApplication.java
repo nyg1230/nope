@@ -1,4 +1,4 @@
-package com.pjt.nope.nope;
+package com.pjt.nope;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
