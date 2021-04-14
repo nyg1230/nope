@@ -12,14 +12,27 @@ export default class Component {
 	}
 
 	setup() {}
+	mounted() {}
 	template() { return ''; }
 	render() {
 		this.$target.innerHTML	= this.template();
+		this.mounted();
 	}
 
 	setEvent() {};
 	setState(newState) {
 		this.$state	= { ...this.$state, ...newState };
 		this.render();
+	}
+
+	addEvent(eventType, selector, callback) {
+		const children	= [ ...this.$target.querySelectorAll(selector) ];
+
+		const _isTarget	= ($target) => children.includes($target) || $target.closest(selector);
+
+		this.$target.addEventListener(eventType, event => {
+			if(!_isTarget(event.target)) return false;
+			callback(event);
+		})
 	}
 }

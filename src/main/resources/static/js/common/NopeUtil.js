@@ -1,0 +1,99 @@
+class Ajax {
+
+	httpRequest;
+	url;
+	type;
+	data;
+	contentType;
+	cbBeforeSend;
+	cbSuccess;
+	cbError;
+	cbComplate;
+	_async;
+
+	contentTypeList;
+
+	constructor() {
+		if(window.XMLHttpRequest) {
+			this.httpRequest	= new XMLHttpRequest();
+
+			this.contentType		= 'application/x-www-form-urlencode';
+			this.contentTypeList	= {
+				'TEXT'			: 'text/plain',
+				'HTML'			: 'text/html',
+				'CSS'			: 'text/css',
+				'JS'			: 'text/javascript',
+				'JAVASCRIPT'	: 'text/javascript',
+				'JSON'			: 'application/json',
+				'MULTIPART'		: 'multipart/formed-data'
+			}
+		} else {
+			return null;
+		}
+	}
+
+	request(opt) {
+		if(opt != null) this.setOption(opt);
+
+		try {
+			this.cbBeforeSend();
+			this.httpRequest.onreadystatechange	= () => {
+				if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
+					if (this.httpRequest.status === 200) {
+						this.cbSuccess(this.httpRequest.responseText);
+					} else {
+						this.cbError(this.httpRequest.status, this.httpRequest.statusText, this.httpRequest.responseText);
+					}
+				  }
+			}
+			this.cbComplate();
+		} catch(e) {
+			console.error(e);
+		}
+		// 타임아웃 차후에
+		let sendRequest	= null;
+		if(this.type == 'GET') {
+
+		} else {
+			this.httpRequest.setRequestHeader('Content-Type', this.contentType);
+			sendRequest	= this.data;
+		}
+		
+		this.httpRequest.open(this.type, this.url, this._async);
+		this.httpRequest.send(sendRequest);
+	}
+
+	setOption(opt) {
+		this.type			= (opt?.type == null) ? 'GET' : opt.type.toUpperCase();
+		this.data			= opt?.data ?? this.getQueryString(opt.data);
+		this.url			= (this.type == 'GET' && opt?.url.indexOf('?') == -1) ? `${opt.url}?${this.data}` : opt.url;
+		this.cbBeforeSend	= (typeof opt?.beforeSend == 'function') ? opt.beforeSend : function(){};
+		this.cbSuccess		= (typeof opt?.success == 'function') ? opt.success : function(){};
+		this.cbError		= (typeof opt?.error == 'function') ? opt.error : function(){};;
+		this.cbComplate		= (typeof opt?.complate == 'function') ? opt.complate : function(){};;
+		this._async			= (opt?.async == null) ? true : !!opt.async;
+		
+		let tmpContentType	= this.contentTypeList[opt?.contentType];
+		this.contentType	= tmpContentType ?? this.contentType;
+	}
+
+	getQueryString(obj) {
+		let queryString	= '';
+
+		if(!Array.isArray(obj) && typeof obj == 'object') {
+
+			for(let key	in obj) {
+				queryString	+= `&${key}=${encodeURIComponent(obj[key])}`;
+			}
+
+		} else {
+			queryString	= encodeURIComponent(obj.toString());
+		}
+
+		return queryString;
+	}
+}
+
+export {
+	Ajax
+};
