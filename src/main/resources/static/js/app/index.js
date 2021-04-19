@@ -1,5 +1,5 @@
-import Signin from '../components/signin/Signin.js';
-import {Ajax} from '../common/NopeUtil.js';
+import LoginBox from '../components/signin/LoginBox.js';
+import {Ajax, CreateDom} from '../common/NopeUtil.js';
 
 window.onload	= () => {
 	const lang	= localStorage.getItem('nopeLanguage');
@@ -18,7 +18,8 @@ window.onload	= () => {
 				window.nopeLanguagePack	= importLangPack.languagePack;
 				
 				let $targetDiv	= document.querySelector('#divIndex')
-				new Signin($targetDiv);
+				const $login	= new CreateDom('login-box');
+				$targetDiv.innerHTML	= $login.outerHTML;
 			})
 		},
 		error	: (a,b,c) => {

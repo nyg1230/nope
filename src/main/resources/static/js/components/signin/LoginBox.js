@@ -1,10 +1,13 @@
-import { Ajax } from '../../common/NopeUtil.js';
+import { Ajax, CreateDom } from '../../common/NopeUtil.js';
 import Component from '../../core/Component.js';
-import Signup from '../signup/Signup.js';
-import GoSignup from './GoSignup.js';
-import DoSignin from './DoSignin.js';
+import GoSignup from './GoSignup.js'
+import DoLogin from './DoLogin.js'
 
-export default class Signin extends Component {
+export default class LoginBox extends Component {
+	static eventName	= {
+		goSignup	: 'goSignup',
+	}
+
 	template() {
 		return `
 		<table id='tblSignin'>
@@ -25,36 +28,18 @@ export default class Signin extends Component {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td colspan='3'>
+						<do-login></do-login>
+						<go-signup></go-signup>
+					</td>
 				</tr>
 			</tfoot>
 		</table>`
 	}
 
-	setEvent() {
-	}
-
 	mounted() {
-		let tfoot		= this.$target.querySelectorAll('#tblSignin tfoot tr td');
-		let $trLogin	= tfoot[0];
-		let $trSignup	= tfoot[1];
-		let $trFind		= tfoot[2];
-
-		new DoSignin(
-			$trLogin,
-			{
-				'doLogin'	: this.doLogin.bind(this)
-			}
-		)
-		
-		new GoSignup(
-			$trSignup,
-			{
-				'goSignup'	: this.goSignup.bind(this)
-			}
-		)
+		const $doLogin	= this.$target.querySelector('do-login')
+		this.addEvent(LoginBox.eventName.goSignup, 'go-signup', () => this.goSignup());
 	}
 
 	doLogin() {
@@ -78,6 +63,8 @@ export default class Signin extends Component {
 	}
 
 	goSignup() {
-		new Signup(this.$target)
+		this.$target.host.outerHTML	= new CreateDom('signup-box').outerHTML;
 	}
 }
+
+window.customElements.define('login-box', LoginBox)

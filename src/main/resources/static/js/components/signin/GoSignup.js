@@ -1,15 +1,14 @@
 import Component from '../../core/Component.js';
+import LoginBox from './LoginBox.js'
 
-export default class DoSignup extends Component {
-	template() {
-		return `<button id='btnGoSignup' class='btn'>${window.nopeLanguagePack.signin.signup}</button>`;
-	}
+export default class GoSignup extends Component {
+	template	= () => `<button id='btnGoSignup'>${window.nopeLanguagePack.signin.signup}</button>`
 
 	setEvent() {
-		let { goSignup }	= this.$props;
-
 		this.addEvent('click', '#btnGoSignup', () => {
-			goSignup();
+			this.dispatchEvent(new CustomEvent(LoginBox.eventName.goSignup, {bubbles : true}))
 		})
 	}
 }
+
+window.customElements.define('go-signup', GoSignup);

@@ -1,14 +1,10 @@
-export default class Component {
+export default class Component extends HTMLElement {
 	$target;
-	$props;
 	$state;
 
-	constructor($target, $props) {
-		this.$target	= $target;
-		this.$props		= $props;
+	constructor() {
+		super();
 		this.setup();
-		this.setEvent();
-		this.render();
 	}
 
 	setup() {}
@@ -19,9 +15,20 @@ export default class Component {
 		this.mounted();
 	}
 
+	connectedCallback() {
+		this.$target	= this.attachShadow({'mode' : 'open'})
+		this.setEvent();
+		this.render();
+	}
+
 	setEvent() {};
-	setState(newState) {
+
+	addState(newState) {
 		this.$state	= { ...this.$state, ...newState };
+		this.render();
+	}
+	setState(newState) {
+		this.$state	= newState;
 		this.render();
 	}
 

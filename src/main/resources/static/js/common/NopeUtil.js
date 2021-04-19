@@ -65,8 +65,8 @@ class Ajax {
 
 	setOption(opt) {
 		this.type			= (opt?.type == null) ? 'GET' : opt.type.toUpperCase();
-		this.data			= opt?.data ?? this.getQueryString(opt.data);
-		this.url			= (this.type == 'GET' && opt?.url.indexOf('?') == -1) ? `${opt.url}?${this.data}` : opt.url;
+		this.data			= (opt?.data == null) ? opt?.data : this.getQueryString(opt.data);
+		this.url			= (this.type == 'GET' && opt?.url.indexOf('?') == -1) ? `${opt.url}${this.data}` : opt.url;
 		this.cbBeforeSend	= (typeof opt?.beforeSend == 'function') ? opt.beforeSend : function(){};
 		this.cbSuccess		= (typeof opt?.success == 'function') ? opt.success : function(){};
 		this.cbError		= (typeof opt?.error == 'function') ? opt.error : function(){};;
@@ -75,17 +75,20 @@ class Ajax {
 		
 		let tmpContentType	= this.contentTypeList[opt?.contentType];
 		this.contentType	= tmpContentType ?? this.contentType;
+
 	}
 
 	getQueryString(obj) {
 		let queryString	= '';
 
 		if(!Array.isArray(obj) && typeof obj == 'object') {
-
+			queryString	= '?';
 			for(let key	in obj) {
 				queryString	+= `&${key}=${encodeURIComponent(obj[key])}`;
 			}
 
+		} else if(Array.isArray(obj)) {
+			queryString	= obj.map((val) => `/${val}`).join('')
 		} else {
 			queryString	= encodeURIComponent(obj.toString());
 		}
@@ -94,6 +97,21 @@ class Ajax {
 	}
 }
 
+class CreateDom {
+	constructor(type, attributes) {
+		const $dom	= document.createElement(type);
+
+		if(typeof attributes == 'object' && !Array.isArray(attributes)) {
+			for(let attr in attributes) {
+				$dom[attr]	= attributes[attr];
+			}
+		}
+
+		return $dom;
+	}
+}
+
 export {
-	Ajax
+	Ajax,
+	CreateDom
 };
