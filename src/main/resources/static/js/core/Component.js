@@ -1,27 +1,32 @@
 export default class Component extends HTMLElement {
+	
 	$target;
 	$state;
+	$root;
 
-	constructor() {
+	constructor($target, $props) {
 		super();
+		this.$target	= $target.attachShadow({mode:'open'});
+		this.$props		= $props;
 		this.setup();
+		this.setEvent();
 	}
 
-	setup() {}
-	mounted() {}
-	template() { return ''; }
-	render() {
-		this.$target.innerHTML	= this.template();
+	setup		= () => {}
+	mounted		= () => {}
+	template	= () => ``
+	render		= (isOpen) => {
+		this.$target.appendChild(this);
+		this.innerHTML	= this.template();
+		// this.$root				= this.attachShadow({mode: (isOpen == null || isOpen == true) ? 'open' : 'closed'})
+		// this.$root.innerHTML	= this.template();
 		this.mounted();
 	}
 
-	connectedCallback() {
-		this.$target	= this.attachShadow({'mode' : 'open'})
-		this.setEvent();
-		this.render();
-	}
+	connectedCallback		= () => {}
+	disconnectedCallback	= () => {}
 
-	setEvent() {};
+	setEvent	= () => {}
 
 	addState(newState) {
 		this.$state	= { ...this.$state, ...newState };

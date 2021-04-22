@@ -1,4 +1,5 @@
 import LoginBox from '../components/signin/LoginBox.js';
+import GoSignup from '../components/signin/GoSignup.js';
 import {Ajax, CreateDom} from '../common/NopeUtil.js';
 
 window.onload	= () => {
@@ -18,8 +19,7 @@ window.onload	= () => {
 				window.nopeLanguagePack	= importLangPack.languagePack;
 				
 				let $targetDiv	= document.querySelector('#divIndex')
-				const $login	= new CreateDom('login-box');
-				$targetDiv.innerHTML	= $login.outerHTML;
+				new LoginBox($targetDiv).render();
 			})
 		},
 		error	: (a,b,c) => {

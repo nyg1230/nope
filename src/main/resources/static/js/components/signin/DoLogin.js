@@ -1,11 +1,11 @@
 import Component from '../../core/Component.js';
 
 export default class DoLogin extends Component {
-	template	= () => `<button id='btnLogin'>${window.nopeLanguagePack.signin.login}</button>`
+	template	= () => `<button class=''>${window.nopeLanguagePack.signin.login}</button>`
 
 	setEvent	= () => {
-		this.addEvent('click', '#btnLogin', e => {
-			// this.dispatchEvent(new CustomEvent('test', {bubbles:true}))
+		this.addEvent('click', 'button', e => {
+			this.dispatchEvent(new CustomEvent(LoginBox.eventName.doLogin, {bubbles : true}))
 		})
 	}
 }
