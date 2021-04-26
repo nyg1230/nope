@@ -1,32 +1,27 @@
 export default class Component extends HTMLElement {
 	
-	$target;
 	$state;
-	$root;
 
-	constructor($target, $props) {
+	constructor() {
 		super();
-		this.$target	= $target.attachShadow({mode:'open'});
-		this.$props		= $props;
 		this.setup();
+		this.attachShadow({mode : 'open'});
 		this.setEvent();
+		this.render();
 	}
 
-	setup		= () => {}
-	mounted		= () => {}
-	template	= () => ``
-	render		= (isOpen) => {
-		this.$target.appendChild(this);
-		this.innerHTML	= this.template();
-		// this.$root				= this.attachShadow({mode: (isOpen == null || isOpen == true) ? 'open' : 'closed'})
-		// this.$root.innerHTML	= this.template();
+	setup() {}
+	mounted() {}
+	template() {return '';}
+	render() {
+		this.shadowRoot.innerHTML	= this.template();
 		this.mounted();
 	}
 
-	connectedCallback		= () => {}
-	disconnectedCallback	= () => {}
+	connectedCallback() {}
+	disconnectedCallback() {}
 
-	setEvent	= () => {}
+	setEvent() {}
 
 	addState(newState) {
 		this.$state	= { ...this.$state, ...newState };
@@ -38,13 +33,18 @@ export default class Component extends HTMLElement {
 	}
 
 	addEvent(eventType, selector, callback) {
-		const children	= [ ...this.$target.querySelectorAll(selector) ];
+		const children	= [ ...this.shadowRoot.querySelectorAll(selector) ];
 
 		const _isTarget	= ($target) => children.includes($target) || $target.closest(selector);
 
-		this.$target.addEventListener(eventType, event => {
+		this.shadowRoot.addEventListener(eventType, event => {
 			if(!_isTarget(event.target)) return false;
 			callback(event);
 		})
+	}
+
+	getEvent(eventType, isBubbles, props) {
+		const event	= new CustomEvent(eventType, {bubbles : !!(isBubbles ?? true), ...props})
+		return event;
 	}
 }

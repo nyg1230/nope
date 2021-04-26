@@ -5,7 +5,8 @@ import DoLogin from './DoLogin.js'
 import SignupBox from '../signup/SignupBox.js'
 
 export default class LoginBox extends Component {
-	template	= () => `
+	template()	{
+		return `
 		<table id='tblSignin'>
 			<thead>
 				<tr>
@@ -24,47 +25,30 @@ export default class LoginBox extends Component {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td class='td doLogin'></td>
-					<td class='td goSignup'></td>
-					<td class='td infoFind'></td>
+					<td colsapn='3'>
+						<go-signup></go-signup>
+					</td>
 				</tr>
 			</tfoot>
 		</table>`
+	};
 
-	mounted	= () => {
-		const $btnLogin		= this.querySelector('.doLogin')
-		new DoLogin($btnLogin).render()
+	setEvent() {
+	}
 
-		const $btnSignup	= this.querySelector('.goSignup')
-		new GoSignup($btnSignup, {
-			goSignup	: this.goSignup.bind(this)
-		}).render();
-
+	mounted() {
+		this.addEvent('goSignup', 'go-signup', () => {
+			this.goSignup();
+		})
+		
 	}
 
 	doLogin		= () => {
-		var $loginId	= this.$target.querySelector('#txtLoginID');
-		var $loginPw	= this.$target.querySelector('#txtLoginPw');
-
-		new Ajax().request({
-			url		: '/login.do',
-			type	: 'get',
-			data	: {
-				loginId	: $loginId.value.trim(),
-				loginPw	: $loginPw.value.trim()
-			},
-			success	: (response) => {
-				console.log(response)
-			},
-			error	: (status) => {
-				console.log(status)
-			}
-		})
 	}
 
 	goSignup	= () => {
-		console.log('?!')
-		new SignupBox(this.$target).render();
+		this.parentNode.appendChild(document.createElement('signup-box'));
+		this.remove();
 	}
 }
 

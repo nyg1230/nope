@@ -4,13 +4,8 @@ import GoSignin from './GoSignin.js'
 
 export default class SignupBox extends Component {
 
-	static eventName	= {
-		doSignup	: 'doSignup',
-		goSignup	: 'goSignup',
-		dupCheck	: 'dupCheck',
-	}
-
-	template	= () => `
+	template() {
+		return `
 		<table>
 			<thead>
 				<tr>
@@ -18,14 +13,51 @@ export default class SignupBox extends Component {
 				</tr>
 			</thead>
 				<tr>
-					<td></td>
+					<td>${window.nopeLanguagePack.signup}</td>
 					<td colspan='2'></td>
 					<td colspan='2'></td>
 				</tr>
 				<tr>
 					<td>${window.nopeLanguagePack.signup.id}</td>
-					<td colspan='2'><input type='text' id='txtId'></td>
+					<td colspan='2'><input type='text' id='txtId' class='txt id'></td>
 					<td colspan='2'><dup-check></dup-check></td>
+				</tr>
+				<tr>
+					<td>${window.nopeLanguagePack.signup.pw}</td>
+					<td colspan='2'><input type='password' id='txtPw' class='txt pw'</td>
+					<td colspan='2'></td>
+				</tr>
+				<tr>
+					<td>${window.nopeLanguagePack.signup.pwChk}</td>
+					<td colspan='2'><input type='password' id='txtPwChk' class='txt pw'</td>
+					<td colspan='2'></td>
+				</tr>
+				<tr>
+					<td>${window.nopeLanguagePack.signup.nickname}</td>
+					<td colspan='2'><input type='text' id='txtNickname' class='id nickname'</td>
+					<td colspan='2'></td>
+				</tr>
+				<tr>
+					<td>${window.nopeLanguagePack.signup.sex}</td>
+					<td colspan='2'>
+						${window.nopeLanguagePack.signup.male}
+						<input type='radio' name='sex' value='M'>
+						${window.nopeLanguagePack.signup.female}
+						<input type='radio' name='sex' value='F'>
+					</td>
+					<td colspan='2'></td>
+				</tr>
+				<tr>
+					<td>${window.nopeLanguagePack.signup.email}</td>
+					<td colspan='2'>
+						<input type='text' id='txtEmailAccount' class='txt email'> @ <input type='text' id='txtDomain'>
+					</td>
+					<td colspan='2'></td>
+				</tr>
+				<tr>
+					<td>${window.nopeLanguagePack.signup.certify}</td>
+					<td colspan='2'></td>
+					<td colspan='2'></td>
 				</tr>
 			<tbody>
 			</tbody>
@@ -38,26 +70,40 @@ export default class SignupBox extends Component {
 				</tr>
 			</tfoot>
 		</table>
-	`
+	`}
 
-	setEvent	= () => {
-		this.addEvent(SignupBox.eventName.goSignup, 'go-signin', () => this.goSignup())
-		this.addEvent(SignupBox.eventName.doSignup, 'do-signup', () => this.doSignup())
+	setEvent() {
+		this.addEvent('keyup', '.id', (e) => {
+			this.dupCheck('id', e.target.value)
+		})
 
+		this.addEvent('keyup', '.pw', (e) => {
+			if(e.target.value > 3 && e.target.value < 11) {
+				const isCompare = Array.from(this.shadowRoot.querySelectorAll('.pw')).map($el => $el.value).every(val => val == e.target.value);
+				if(isCompare) {
+					
+				}
+			} else {
+
+			}
+		})
 	}
 
-	doSignup	= () => {
-
+	mounted() {
+		this.addEvent('goSignin', 'go-signin', () => {
+			this.goSignin();
+		})
 	}
 
-	goSignup	= () => {
-		this.$target.host.outerHTML	= new CreateDom('login-box').outerHTML;
+	dupCheck	= (type, str) => {
+		console.log(type)
+		console.log(str)
 	}
 
-	dupCheck	= (e, props) => {
-		const {$target}	= props
-		console.log(e.type)
-		console.log($target)
+	goSignin	= () => {
+		console.log('asd')
+		this.parentNode.appendChild(document.createElement('login-box'));
+		this.remove();
 	}
 }
 

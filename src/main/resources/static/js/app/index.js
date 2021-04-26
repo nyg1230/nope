@@ -18,8 +18,8 @@ window.onload	= () => {
 			]) => {
 				window.nopeLanguagePack	= importLangPack.languagePack;
 				
-				let $targetDiv	= document.querySelector('#divIndex')
-				new LoginBox($targetDiv).render();
+				let $targetDiv	= document.querySelector('#divIndex');
+				$targetDiv.innerHTML	= `<login-box></login-box>`
 			})
 		},
 		error	: (a,b,c) => {
