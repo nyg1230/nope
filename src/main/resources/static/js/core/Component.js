@@ -2,6 +2,8 @@ export default class Component extends HTMLElement {
 	
 	$state;
 
+	static get observedAttributes() {}
+
 	constructor() {
 		super();
 		this.setup();
@@ -20,6 +22,7 @@ export default class Component extends HTMLElement {
 
 	connectedCallback() {}
 	disconnectedCallback() {}
+	attributeChangedCallback() {}
 
 	setEvent() {}
 

@@ -26,7 +26,7 @@ export default class LoginBox extends Component {
 			<tfoot>
 				<tr>
 					<td colsapn='3'>
-						<go-signup></go-signup>
+						<go-signup/>
 					</td>
 				</tr>
 			</tfoot>

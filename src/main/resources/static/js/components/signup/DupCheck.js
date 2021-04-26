@@ -1,12 +1,17 @@
 import Component from "../../core/Component.js";
-import SignupBox from "./SignupBox.js";
 
 export default class DupCheck extends Component {
-	template	= () => `<label>test<label>`
 
-	setEvent	= () => {
-		
+	static get observedAttributes() {return ['is-dup']; }
+
+	template() {
+		return `<label>test<label>`
 	}
+
+	attributeChangedCallback(attrName, oldVal, newVal) {
+		console.log(newVal == 'true')
+	}
+
 }
 
 window.customElements.define('dup-check', DupCheck)
