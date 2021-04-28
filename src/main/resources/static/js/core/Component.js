@@ -47,7 +47,8 @@ export default class Component extends HTMLElement {
 	}
 
 	getEvent(eventType, isBubbles, props) {
-		const event	= new CustomEvent(eventType, {bubbles : !!(isBubbles ?? true), ...props})
+
+		const event	= new CustomEvent(eventType, Object.assign({bubbles : !!(isBubbles ?? true)}, props))
 		return event;
 	}
 }
