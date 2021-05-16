@@ -60,13 +60,13 @@ export default class SignupBox extends Component {
 				<tr>
 					<td>${window.nopeLanguagePack.signup.email}</td>
 					<td colspan='2'>
-						<input type='text' id='txtEmailAccount' class='txt email'> @ <input type='text' id='txtDomain' disabled>
+						<input type='text' id='txtEmailAccount' class='txt email'> @ <input type='text' id='txtDomain' class='txt email' disabled>
 					</td>
 					<td colspan='2'><email-domain/></td>
 				</tr>
 				<tr>
 					<td>${window.nopeLanguagePack.signup.certify}</td>
-					<td colspan='2'></td>
+					<td colspan='2'><input type='text' id='txtCertifyCode' class='txt certify'></td>
 					<td colspan='2'></td>
 				</tr>
 			<tbody>
@@ -104,6 +104,10 @@ export default class SignupBox extends Component {
 				} else pwChk	= PwCheck.msgType[1];
 			}
 			this.shadowRoot.querySelector('pw-check').setAttribute(PwCheck.observedAttributes[0], pwChk);
+		})
+
+		this.addEvent('click', '[name=sex]', (e) => {
+			this.user.sex	= e.target.value;
 		})
 
 		this.addEvent('getDomain', 'email-domain', (e) => {
@@ -159,6 +163,23 @@ export default class SignupBox extends Component {
 	goSignin	= () => {
 		this.parentNode.appendChild(document.createElement('login-box'));
 		this.remove();
+	}
+
+	sendCertifyCode	= () => {
+		this.user.email	= Array.from(this.shadowRoot.querySelectorAll('input.email')).map($el => $el.value).join('@');
+
+		let reg	= new RegExp('');
+
+		if(reg.test(this.user.email)) {
+
+		} else {
+			
+		}
+
+	}
+
+	checkCertifyCode	= (certifyCdoe) => {
+
 	}
 }
 
