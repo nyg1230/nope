@@ -1,5 +1,3 @@
-import LoginBox from '../components/signin/LoginBox.js';
-import GoSignup from '../components/signin/GoSignup.js';
 import {Ajax, CreateDom} from '../common/NopeUtil.js';
 
 window.onload	= () => {

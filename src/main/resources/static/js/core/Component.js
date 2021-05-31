@@ -1,13 +1,14 @@
-export default class Component extends HTMLElement {
+export default class Component {
 	
-	$state;
+	$target
+	state;
+	prop;
 
-	static get observedAttributes() {}
+	constructor($target, prop) {
+		this.$target	= $target;
+		this.prop		= prop;
 
-	constructor() {
-		super();
 		this.setup();
-		this.attachShadow({mode : 'open'});
 		this.setEvent();
 		this.render();
 	}
@@ -16,16 +17,10 @@ export default class Component extends HTMLElement {
 	mounted() {}
 	template() {return '';}
 	render() {
-		this.shadowRoot.innerHTML	= this.template();
+		this.$target.innerHTML	= this.template();
 		this.mounted();
 	}
-
-	connectedCallback() {}
-	disconnectedCallback() {}
-	attributeChangedCallback() {}
-
 	setEvent() {}
-
 	addState(newState) {
 		this.$state	= { ...this.$state, ...newState };
 		this.render();
@@ -36,18 +31,17 @@ export default class Component extends HTMLElement {
 	}
 
 	addEvent(eventType, selector, callback) {
-		const children	= [ ...this.shadowRoot.querySelectorAll(selector) ];
+		const children	= [ ...this.$target.querySelectorAll(selector) ];
 
 		const _isTarget	= ($target) => children.includes($target) || $target.closest(selector);
 
-		this.shadowRoot.addEventListener(eventType, event => {
+		this.$target.addEventListener(eventType, event => {
 			if(!_isTarget(event.target)) return false;
 			callback(event);
 		})
 	}
 
 	getEvent(eventType, isBubbles, props) {
-
 		const event	= new CustomEvent(eventType, Object.assign({bubbles : !!(isBubbles ?? true)}, props))
 		return event;
 	}

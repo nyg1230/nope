@@ -3,10 +3,12 @@ package com.pjt.nope.domain;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class PageController {
+public class RootController {
+	
 	@Value("${nope.js.lang.path}")
 	private String langPackPath;
 
@@ -18,19 +20,9 @@ public class PageController {
 		return "index";
 	}
 
-	@GetMapping("/main")
-	public String mainPage() {
-		return "";
-	}
-
-	@GetMapping("/error")
-	public String errorPage() {
-		return "";
-	}
-
 	@GetMapping("/check/language")
 	@ResponseBody
-	public String getLanguagePackPath(String lang) {
+	public String getLanguagePackPath(@RequestParam(value = "lang", required = false, defaultValue = "kor") String lang) {
 		String result	= langPackPath;
 
 		try {
@@ -43,4 +35,5 @@ public class PageController {
 		}
 		return result;
 	}
+
 }

@@ -1,15 +1,22 @@
-import Component from '../../core/Component.js';
+import Component from "../../core/Component.js";
+import SignupFrame from "../signup/SignupFrame.js";
 
 export default class GoSignup extends Component {
 	template() {
-		return `<button class=''>${window.nopeLanguagePack.signin.signup}</button>`;
+		return `
+			<button>test</button>
+		`
 	}
 
-	mounted() {
+	setEvent() {
+		let {$target}	= {...this.prop}
+
 		this.addEvent('click', 'button', () => {
-			this.dispatchEvent(this.getEvent('goSignup'))
+			history.pushState({}, null, '/signup');
+			new SignupFrame($target, {
+
+			})
 		})
+		
 	}
 }
-
-window.customElements.define('go-signup', GoSignup);
