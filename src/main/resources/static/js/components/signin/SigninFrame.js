@@ -11,13 +11,13 @@ export default class SigninFrame extends Component {
 					<thead></thead>
 					<tbody>
 						<tr>
-							<td>id</td>
+							<td>${window.languagePack.signin.id}</td>
 							<td>
 								<input type='text'>
 							</td>
 						</tr>
 						<tr>
-							<td>pw</td>
+							<td>${window.languagePack.signin.pw}</td>
 							<td>
 								<input type='password'>
 							</td>

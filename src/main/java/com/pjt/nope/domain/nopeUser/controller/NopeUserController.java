@@ -5,7 +5,6 @@ import com.pjt.nope.domain.nopeUser.vo.NopeUser;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,9 +38,12 @@ public class NopeUserController {
 		return test;
 	}
 
-	@GetMapping("/signup/dupChk/{chkType}/{chkTxt}")
+	@GetMapping("/api/public/signup/dup-check")
 	@ResponseBody
-	public boolean dupChk(@PathVariable("chkType") String chkType, @PathVariable("chkTxt") String chkTxt) {
+	public boolean dupChk(
+		@RequestParam(value = "chkType", required = false, defaultValue = "") String chkType,
+		@RequestParam(value = "chkTxt", required = false, defaultValue = "") String chkTxt)
+	{
 		System.out.println(chkType);
 		System.out.println(chkTxt);
 		return false;

@@ -4,7 +4,7 @@ import SignupFrame from "../signup/SignupFrame.js";
 export default class GoSignup extends Component {
 	template() {
 		return `
-			<button>test</button>
+			<button>${window.languagePack.signin.signup}</button>
 		`
 	}
 
@@ -13,9 +13,7 @@ export default class GoSignup extends Component {
 
 		this.addEvent('click', 'button', () => {
 			history.pushState({}, null, '/signup');
-			new SignupFrame($target, {
-
-			})
+			new SignupFrame($target, {})
 		})
 		
 	}
