@@ -44,7 +44,7 @@ public class NopeUserController {
 		@RequestParam(value = "chkType", required = false, defaultValue = "") String chkType,
 		@RequestParam(value = "chkTxt", required = false, defaultValue = "") String chkTxt)
 	{
-		System.out.println(chkType);
+	 	System.out.println(chkType);
 		System.out.println(chkTxt);
 		return false;
 	}

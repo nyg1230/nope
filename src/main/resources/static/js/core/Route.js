@@ -1,6 +1,6 @@
 import SigninFrame from "../components/signin/SigninFrame.js";
 import SignupFrame from "../components/signup/SignupFrame.js";
-
+import StockFrame from "../components/stock/StockFrame.js";
 
 export default class Route {
 
@@ -31,7 +31,8 @@ export default class Route {
 	}
 
 	routes	= {
-		'/'			: SigninFrame,
-		'/signup'	: SignupFrame,
+		'/'				: SigninFrame,
+		'/signup'		: SignupFrame,
+		'/stock/calc'	: StockFrame
 	}
 }
