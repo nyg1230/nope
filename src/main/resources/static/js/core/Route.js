@@ -33,6 +33,6 @@ export default class Route {
 	routes	= {
 		'/'				: SigninFrame,
 		'/signup'		: SignupFrame,
-		'/stock/calc'	: StockFrame
+		'/stock'		: StockFrame
 	}
 }

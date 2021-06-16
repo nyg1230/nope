@@ -35,21 +35,28 @@ class Ajax {
 	request(opt) {
 		if(opt != null) this.setOption(opt);
 
+		this.httpRequest.withCredentials	= !!opt.withCredentials;
+
 		try {
-			this.cbBeforeSend();
+			
 			this.httpRequest.onreadystatechange	= () => {
+				this.cbBeforeSend();
 				if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
 					if (this.httpRequest.status === 200) {
 						this.cbSuccess(this.httpRequest.responseText);
 					} else {
 						this.cbError(this.httpRequest.status, this.httpRequest.statusText, this.httpRequest.responseText);
 					}
-				  }
+				}
+				this.cbBeforeSend();
 			}
 			this.cbComplate();
 		} catch(e) {
 			console.error(e);
 		}
+
+		this.httpRequest.open(this.type, this.url, this._async);
+
 		// 타임아웃 차후에
 		let sendRequest	= null;
 		if(this.type == 'GET') {
@@ -58,14 +65,26 @@ class Ajax {
 			this.httpRequest.setRequestHeader('Content-Type', this.contentType);
 			sendRequest	= this.data;
 		}
+
 		
-		this.httpRequest.open(this.type, this.url, this._async);
+		// header 세팅은 open 이후에
+		if(this.header) {
+			// Object.keys(this.header).forEach((headerKey) => {
+			// 	let headerVal	= this.header[headerKey];
+			// 	this.httpRequest.setRequestHeader(headerKey, headerVal);
+			// })
+			for(let key in this.header) {
+				this.httpRequest.setRequestHeader(key, this.header[key]);
+			}
+		}
+		
+		
 		this.httpRequest.send(sendRequest);
 	}
 
 	setOption(opt) {
 		this.type			= (opt?.type == null) ? 'GET' : opt.type.toUpperCase();
-		this.data			= (opt?.data == null) ? opt?.data : this.getQueryString(opt.data);
+		this.data			= (opt?.data == null) ? '' : this.getQueryString(opt.data);
 		this.url			= (this.type == 'GET' && opt?.url.indexOf('?') == -1) ? `${opt.url}${this.data}` : opt.url;
 		this.cbBeforeSend	= (typeof opt?.beforeSend == 'function') ? opt.beforeSend : function(){};
 		this.cbSuccess		= (typeof opt?.success == 'function') ? opt.success : function(){};
@@ -75,6 +94,7 @@ class Ajax {
 		
 		let tmpContentType	= this.contentTypeList[opt?.contentType];
 		this.contentType	= tmpContentType ?? this.contentType;
+		this.header			= opt.header ?? null;
 
 	}
 
